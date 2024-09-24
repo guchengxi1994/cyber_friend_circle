@@ -1,0 +1,26 @@
+{
+    "assets": [
+        {
+            "type": "avatar",
+            "prefix": "assets/avatars/",
+            "items": [
+                "f1.webp",
+                "f2.webp",
+                "f3.webp",
+                "f4.webp",
+                "m1.webp",
+                "m2.webp",
+                "m3.webp",
+                "m4.webp"
+            ]
+        },
+        {
+            "type": "emoji",
+            "prefix": "assets/emojis/",
+            "items": [
+                "joy.json",
+                "smile.json"
+            ]
+        }
+    ]
+}
