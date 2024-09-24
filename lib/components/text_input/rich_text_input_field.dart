@@ -57,7 +57,7 @@ class _RichTextInputFieldState extends ConsumerState<RichTextInputField> {
         onLongPress: () {
           if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
             ref.read(richTextInputProvider.notifier).toggleExpand();
-            widget.onExpandChanged(state.expanded);
+            widget.onExpandChanged(!state.expanded);
           }
         },
         child: Column(
