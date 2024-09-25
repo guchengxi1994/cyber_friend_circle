@@ -119,7 +119,7 @@ User _userDeserialize(
   object.avatar = reader.readStringOrNull(offsets[0]);
   object.avatarType =
       _UseravatarTypeValueEnumMap[reader.readStringOrNull(offsets[1])] ??
-          AvatarType.asset;
+          ImageType.asset;
   object.createAt = reader.readLong(offsets[2]);
   object.id = id;
   object.name = reader.readStringOrNull(offsets[3]);
@@ -139,7 +139,7 @@ P _userDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (_UseravatarTypeValueEnumMap[reader.readStringOrNull(offset)] ??
-          AvatarType.asset) as P;
+          ImageType.asset) as P;
     case 2:
       return (reader.readLong(offset)) as P;
     case 3:
@@ -156,11 +156,13 @@ const _UseravatarTypeEnumValueMap = {
   r'asset': r'asset',
   r'url': r'url',
   r'file': r'file',
+  r'none': r'none',
 };
 const _UseravatarTypeValueEnumMap = {
-  r'asset': AvatarType.asset,
-  r'url': AvatarType.url,
-  r'file': AvatarType.file,
+  r'asset': ImageType.asset,
+  r'url': ImageType.url,
+  r'file': ImageType.file,
+  r'none': ImageType.none,
 };
 const _UsertypeEnumValueMap = {
   r'you': r'you',
@@ -523,7 +525,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
   }
 
   QueryBuilder<User, User, QAfterFilterCondition> avatarTypeEqualTo(
-    AvatarType value, {
+    ImageType value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
@@ -536,7 +538,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
   }
 
   QueryBuilder<User, User, QAfterFilterCondition> avatarTypeGreaterThan(
-    AvatarType value, {
+    ImageType value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -551,7 +553,7 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
   }
 
   QueryBuilder<User, User, QAfterFilterCondition> avatarTypeLessThan(
-    AvatarType value, {
+    ImageType value, {
     bool include = false,
     bool caseSensitive = true,
   }) {
@@ -566,8 +568,8 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
   }
 
   QueryBuilder<User, User, QAfterFilterCondition> avatarTypeBetween(
-    AvatarType lower,
-    AvatarType upper, {
+    ImageType lower,
+    ImageType upper, {
     bool includeLower = true,
     bool includeUpper = true,
     bool caseSensitive = true,
@@ -1218,7 +1220,7 @@ extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
     });
   }
 
-  QueryBuilder<User, AvatarType, QQueryOperations> avatarTypeProperty() {
+  QueryBuilder<User, ImageType, QQueryOperations> avatarTypeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'avatarType');
     });

@@ -21,6 +21,16 @@
                 "joy.json",
                 "smile.json"
             ]
+        },
+        {
+            "type": "bg",
+            "prefix": "assets/bgs/",
+            "items": [
+                "bg1.jpeg",
+                "bg2.jpeg",
+                "bg3.jpeg",
+                "bg4.jpeg"
+            ]
         }
     ]
 }

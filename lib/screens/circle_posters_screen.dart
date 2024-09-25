@@ -1,78 +1,78 @@
 import 'dart:ui';
 
+import 'package:cyber_friend_circle/components/circle/circle_poster_widget.dart';
 import 'package:cyber_friend_circle/components/circle/custom_scrollview.dart';
+import 'package:cyber_friend_circle/screens/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../components/text_input/rich_text_input_field.dart';
 
-class CirclePostersScreen extends StatefulWidget {
+class CirclePostersScreen extends ConsumerStatefulWidget {
   const CirclePostersScreen({super.key});
 
   @override
-  State<CirclePostersScreen> createState() => _CirclePostersScreenState();
+  ConsumerState<CirclePostersScreen> createState() =>
+      _CirclePostersScreenState();
 }
 
-class _CirclePostersScreenState extends State<CirclePostersScreen> {
-  bool showBottom = false;
-  bool expanded = false;
-  double height = 200;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
+class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: !expanded
-          ? AppBar(
-              automaticallyImplyLeading: false,
-              elevation: 0,
-              backgroundColor: Colors.white,
-              actions: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        showBottom = !showBottom;
-                      });
-                    },
-                    child: Icon(!showBottom ? Icons.add : Icons.remove),
-                  ),
-                )
-              ],
-            )
-          : null,
+    final state = ref.watch(circlePostersProvider);
+
+    return SafeArea(
+        child: Scaffold(
       body: Stack(
         children: [
           GestureDetector(
             onTap: () {
-              if (showBottom) {
-                setState(() {
-                  showBottom = !showBottom;
-                });
+              if (state.showBottom) {
+                ref.read(circlePostersProvider.notifier).toggleBottom();
               }
             },
             child: CustomScrollview(
-                header: Container(
-                  color: Colors.red,
+                header: Stack(
+                  children: [
+                    ColorFiltered(
+                      colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.darken), // 为图片应用颜色过滤器
+                      child: Image.asset(
+                        "assets/bgs/bg1.jpeg",
+                        width: MediaQuery.of(context).size.width,
+                        // height: 300,
+                        fit: BoxFit.fitWidth,
+                      ),
+                    ),
+                    if (!state.inputExpaned)
+                      Positioned(
+                        top: 30,
+                        right: 10,
+                        child: InkWell(
+                          onTap: () {
+                            ref
+                                .read(circlePostersProvider.notifier)
+                                .toggleBottom();
+                          },
+                          child: Icon(
+                            !state.showBottom ? Icons.add : Icons.remove,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                  ],
                 ),
-                body: Container(
-                  padding: const EdgeInsets.only(top: 20),
-                  height: 1000,
-                  decoration: const BoxDecoration(
-                    color: Colors.amber,
-                  ),
+                body: Column(
+                  children: [
+                    CirclePoster(
+                      topic: state.topics[0],
+                      user: ref.read(circlePostersProvider.notifier).user,
+                    )
+                  ],
                 )),
           ),
-          if (showBottom)
+          if (state.showBottom)
             Positioned(
               bottom: 0,
               child: ClipRect(
@@ -89,20 +89,18 @@ class _CirclePostersScreenState extends State<CirclePostersScreen> {
                 ),
               ),
             ),
-          if (showBottom)
+          if (state.showBottom)
             Positioned(
               bottom: 5,
               child: RichTextInputField(
                 onSubmit: (String text) {},
                 onExpandChanged: (bool e) {
-                  setState(() {
-                    expanded = e;
-                  });
+                  ref.read(circlePostersProvider.notifier).changeInputExpand(e);
                 },
               ),
             )
         ],
       ),
-    );
+    ));
   }
 }

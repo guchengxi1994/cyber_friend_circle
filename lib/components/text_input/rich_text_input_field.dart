@@ -56,8 +56,12 @@ class _RichTextInputFieldState extends ConsumerState<RichTextInputField> {
       child: GestureDetector(
         onLongPress: () {
           if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
-            ref.read(richTextInputProvider.notifier).toggleExpand();
-            widget.onExpandChanged(!state.expanded);
+            if (MediaQuery.of(context).size.width > 1000) {
+              ref.read(richTextInputProvider.notifier).toggleExpand();
+              widget.onExpandChanged(!state.expanded);
+            } else {
+              /// TODO show some toast
+            }
           }
         },
         child: Column(

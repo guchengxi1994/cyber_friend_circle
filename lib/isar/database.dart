@@ -1,4 +1,5 @@
 import 'package:cyber_friend_circle/global/global.dart' show logger;
+import 'package:cyber_friend_circle/isar/board.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:isar/isar.dart';
@@ -31,6 +32,7 @@ class IsarDatabase {
   late List<CollectionSchema<Object>> schemas = [
     UserSchema,
     TopicReplySchema,
-    TopicSchema
+    TopicSchema,
+    BoardSchema
   ];
 }

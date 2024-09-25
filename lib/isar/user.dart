@@ -1,10 +1,10 @@
 import 'package:isar/isar.dart';
 
+import 'image.dart';
+
 part 'user.g.dart';
 
 enum UserType { you, friend, blacklist }
-
-enum AvatarType { asset, url, file }
 
 @collection
 class User {
@@ -18,7 +18,7 @@ class User {
   UserType type = UserType.you;
 
   @Enumerated(EnumType.name)
-  AvatarType avatarType = AvatarType.asset;
+  ImageType avatarType = ImageType.asset;
 
   int createAt = DateTime.now().millisecondsSinceEpoch;
 }

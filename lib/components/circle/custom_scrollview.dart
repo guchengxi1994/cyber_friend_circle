@@ -1,28 +1,28 @@
+import 'package:cyber_friend_circle/screens/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class CustomScrollview extends StatefulWidget {
+class CustomScrollview extends ConsumerStatefulWidget {
   const CustomScrollview({super.key, required this.body, required this.header});
   final Widget header;
   final Widget body;
 
   @override
-  State<CustomScrollview> createState() => _CustomScrollviewState();
+  ConsumerState<CustomScrollview> createState() => _CustomScrollviewState();
 }
 
-class _CustomScrollviewState extends State<CustomScrollview> {
-  bool expanded = false;
+class _CustomScrollviewState extends ConsumerState<CustomScrollview> {
+  // bool expanded = false;
   final ScrollController controller = ScrollController();
 
   @override
   void initState() {
     super.initState();
     controller.addListener(() {
-      print(controller.position.userScrollDirection);
-
       if (controller.offset >= 150 &&
           controller.offset < 400 &&
-          expanded &&
+          ref.read(circlePostersProvider.select((v) => v.bgImageExpanded)) &&
           controller.position.userScrollDirection == ScrollDirection.reverse) {
         controller.animateTo(400,
             duration: const Duration(milliseconds: 100),
@@ -31,7 +31,7 @@ class _CustomScrollviewState extends State<CustomScrollview> {
 
       if (controller.offset >= 50 &&
           controller.offset < 200 &&
-          !expanded &&
+          !ref.read(circlePostersProvider.select((v) => v.bgImageExpanded)) &&
           controller.position.userScrollDirection == ScrollDirection.reverse) {
         controller.animateTo(200,
             duration: const Duration(milliseconds: 100),
@@ -48,26 +48,29 @@ class _CustomScrollviewState extends State<CustomScrollview> {
 
   @override
   Widget build(BuildContext context) {
+    double height =
+        ref.watch(circlePostersProvider.select((v) => v.bgImageExpanded))
+            ? 400
+            : 200;
     return SingleChildScrollView(
       controller: controller,
       child: Column(
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                expanded = !expanded;
-              });
+              ref.read(circlePostersProvider.notifier).changeBgExpand();
             },
             child: AnimatedContainer(
-              height: expanded ? 400 : 200,
+              height: height,
               duration: const Duration(milliseconds: 300),
               child: widget.header,
             ),
           ),
           Container(
+            height: MediaQuery.of(context).size.height - height,
             padding: const EdgeInsets.only(top: 20),
-            decoration: const BoxDecoration(
-              color: Colors.amber,
+            decoration: BoxDecoration(
+              color: Colors.grey[300],
             ),
             child: widget.body,
           )
