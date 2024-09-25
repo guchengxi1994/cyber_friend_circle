@@ -53,6 +53,7 @@ class _CustomScrollviewState extends ConsumerState<CustomScrollview> {
             ? 400
             : 200;
     return SingleChildScrollView(
+      padding: const EdgeInsets.only(bottom: 20),
       controller: controller,
       child: Column(
         children: [
@@ -67,11 +68,7 @@ class _CustomScrollviewState extends ConsumerState<CustomScrollview> {
             ),
           ),
           Container(
-            height: MediaQuery.of(context).size.height - height,
             padding: const EdgeInsets.only(top: 20),
-            decoration: BoxDecoration(
-              color: Colors.grey[300],
-            ),
             child: widget.body,
           )
         ],

@@ -622,6 +622,12 @@ const TopicReplySchema = CollectionSchema(
       id: 1,
       name: r'createAt',
       type: IsarType.long,
+    ),
+    r'replyType': PropertySchema(
+      id: 2,
+      name: r'replyType',
+      type: IsarType.byte,
+      enumMap: _TopicReplyreplyTypeEnumValueMap,
     )
   },
   estimateSize: _topicReplyEstimateSize,
@@ -668,6 +674,7 @@ void _topicReplySerialize(
 ) {
   writer.writeString(offsets[0], object.content);
   writer.writeLong(offsets[1], object.createAt);
+  writer.writeByte(offsets[2], object.replyType.index);
 }
 
 TopicReply _topicReplyDeserialize(
@@ -680,6 +687,9 @@ TopicReply _topicReplyDeserialize(
   object.content = reader.readStringOrNull(offsets[0]);
   object.createAt = reader.readLong(offsets[1]);
   object.id = id;
+  object.replyType =
+      _TopicReplyreplyTypeValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+          ReplyType.text;
   return object;
 }
 
@@ -694,10 +704,26 @@ P _topicReplyDeserializeProp<P>(
       return (reader.readStringOrNull(offset)) as P;
     case 1:
       return (reader.readLong(offset)) as P;
+    case 2:
+      return (_TopicReplyreplyTypeValueEnumMap[reader.readByteOrNull(offset)] ??
+          ReplyType.text) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
 }
+
+const _TopicReplyreplyTypeEnumValueMap = {
+  'text': 0,
+  'image': 1,
+  'animatedEmoji': 2,
+  'emoji': 3,
+};
+const _TopicReplyreplyTypeValueEnumMap = {
+  0: ReplyType.text,
+  1: ReplyType.image,
+  2: ReplyType.animatedEmoji,
+  3: ReplyType.emoji,
+};
 
 Id _topicReplyGetId(TopicReply object) {
   return object.id;
@@ -1046,6 +1072,60 @@ extension TopicReplyQueryFilter
       ));
     });
   }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> replyTypeEqualTo(
+      ReplyType value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'replyType',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition>
+      replyTypeGreaterThan(
+    ReplyType value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'replyType',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> replyTypeLessThan(
+    ReplyType value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'replyType',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> replyTypeBetween(
+    ReplyType lower,
+    ReplyType upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'replyType',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension TopicReplyQueryObject
@@ -1092,6 +1172,18 @@ extension TopicReplyQuerySortBy
       return query.addSortBy(r'createAt', Sort.desc);
     });
   }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> sortByReplyType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'replyType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> sortByReplyTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'replyType', Sort.desc);
+    });
+  }
 }
 
 extension TopicReplyQuerySortThenBy
@@ -1131,6 +1223,18 @@ extension TopicReplyQuerySortThenBy
       return query.addSortBy(r'id', Sort.desc);
     });
   }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> thenByReplyType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'replyType', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> thenByReplyTypeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'replyType', Sort.desc);
+    });
+  }
 }
 
 extension TopicReplyQueryWhereDistinct
@@ -1145,6 +1249,12 @@ extension TopicReplyQueryWhereDistinct
   QueryBuilder<TopicReply, TopicReply, QDistinct> distinctByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createAt');
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QDistinct> distinctByReplyType() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'replyType');
     });
   }
 }
@@ -1166,6 +1276,12 @@ extension TopicReplyQueryProperty
   QueryBuilder<TopicReply, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
+    });
+  }
+
+  QueryBuilder<TopicReply, ReplyType, QQueryOperations> replyTypeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'replyType');
     });
   }
 }

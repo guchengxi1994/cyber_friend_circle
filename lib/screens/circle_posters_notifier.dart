@@ -1,27 +1,67 @@
+import 'package:cyber_friend_circle/isar/database.dart';
 import 'package:cyber_friend_circle/isar/image.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:isar/isar.dart';
 
 import 'circle_posters_state.dart';
 
 class CirclePostersNotifier extends AutoDisposeNotifier<CirclePostersState> {
+  final database = IsarDatabase();
+
   @override
   CirclePostersState build() {
-    /// TODO remove this test data
+    final topics = database.isar!.topics.where().findAllSync();
 
-    return CirclePostersState(topics: [
-      Topic()
-        ..content = """
+    return CirclePostersState(topics: topics);
+  }
+
+  /// FOR TEST
+  ///
+  /// Insert some test data
+  Future insertTestData() async {
+    final user = User()
+      ..id = 1
+      ..name = "xiaoshuyui"
+      ..avatar = "assets/avatars/f1.webp"
+      ..type = UserType.you
+      ..avatarType = ImageType.asset;
+
+    final user2 = User()
+      ..id = 2
+      ..name = "friend"
+      ..avatar = "assets/avatars/f2.webp"
+      ..type = UserType.friend
+      ..avatarType = ImageType.asset;
+
+    final topic = Topic()
+      ..content = """
 ## 今天不加班，好开心
 
 为什么不加班呢？
 
 因为加班没有加班费。😀
 """
-        ..createAt = DateTime.now().millisecondsSinceEpoch
-        ..id = 1
-    ]);
+      ..createAt = DateTime.now().millisecondsSinceEpoch;
+
+    final TopicReply reply = TopicReply()
+      ..content = "😀"
+      ..createAt = DateTime.now().millisecondsSinceEpoch
+      ..replyType = ReplyType.text;
+
+    await database.isar!.writeTxn(() async {
+      await database.isar!.users.put(user);
+      await database.isar!.users.put(user2);
+      await database.isar!.topics.put(topic);
+      await database.isar!.topicReplys.put(reply);
+      topic.replies.add(reply);
+      reply.user.value = user2;
+      await topic.replies.save();
+      await reply.user.save();
+      await database.isar!.topics.put(topic);
+      await database.isar!.topicReplys.put(reply);
+    });
   }
 
   /// TODO remove this test data
