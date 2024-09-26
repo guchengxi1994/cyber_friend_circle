@@ -40,6 +40,46 @@ class CirclePosterReplyWidget extends StatelessWidget {
                 child: MarkdownBlock(data: reply.content ?? ""),
               ),
               const SizedBox(height: 5),
+              SizedBox(
+                height: 20,
+                width: MediaQuery.of(context).size.width - 90,
+                child: Row(
+                  children: [
+                    Text(DateTime.fromMillisecondsSinceEpoch(reply.createAt)
+                        .toLocal()
+                        .toString()
+                        .split(".")[0]),
+                    const Spacer(),
+                    if (reply.reaction == Reaction.like)
+                      InkWell(
+                        onTap: () {},
+                        child: const Icon(Icons.thumb_up,
+                            color: Colors.green, size: 15),
+                      ),
+                    if (reply.reaction == Reaction.dislike)
+                      InkWell(
+                        onTap: () {},
+                        child: const Icon(Icons.thumb_down,
+                            color: Colors.red, size: 15),
+                      ),
+                    if (reply.reaction == Reaction.none)
+                      InkWell(
+                        onTap: () {},
+                        child: const Icon(Icons.thumb_up_alt_outlined,
+                            color: Colors.grey, size: 15),
+                      ),
+                    if (reply.reaction == Reaction.none)
+                      const SizedBox(width: 20),
+                    if (reply.reaction == Reaction.none)
+                      InkWell(
+                        onTap: () {},
+                        child: const Icon(Icons.thumb_down_alt_outlined,
+                            color: Colors.grey, size: 15),
+                      ),
+                    const SizedBox(width: 20),
+                  ],
+                ),
+              )
             ],
           ),
         ],

@@ -9,10 +9,13 @@ part of 'assets.dart';
 Assets _$AssetsFromJson(Map<String, dynamic> json) => Assets()
   ..assets = (json['assets'] as List<dynamic>)
       .map((e) => AssetObj.fromJson(e as Map<String, dynamic>))
-      .toList();
+      .toList()
+  ..characters =
+      (json['characters'] as List<dynamic>).map((e) => e as String).toList();
 
 Map<String, dynamic> _$AssetsToJson(Assets instance) => <String, dynamic>{
       'assets': instance.assets,
+      'characters': instance.characters,
     };
 
 AssetObj _$AssetObjFromJson(Map<String, dynamic> json) => AssetObj()

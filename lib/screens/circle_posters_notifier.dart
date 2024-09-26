@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cyber_friend_circle/isar/database.dart';
 import 'package:cyber_friend_circle/isar/image.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
@@ -12,7 +14,11 @@ class CirclePostersNotifier extends AutoDisposeNotifier<CirclePostersState> {
 
   @override
   CirclePostersState build() {
-    final topics = database.isar!.topics.where().findAllSync();
+    final topics = database.isar!.topics
+        .where()
+        .sortByCreateAtDesc()
+        .limit(10)
+        .findAllSync();
 
     return CirclePostersState(topics: topics);
   }
@@ -83,6 +89,31 @@ class CirclePostersNotifier extends AutoDisposeNotifier<CirclePostersState> {
 
   void changeInputExpand(bool b) {
     state = state.copyWith(inputExpaned: b);
+  }
+
+  final Random random = Random();
+
+  Future postNewTopic(String s) async {
+    final topic = Topic()
+      ..content = s
+      ..createAt = DateTime.now().millisecondsSinceEpoch
+      ..maxReplyCount = random.nextInt(5) + 1;
+
+    await database.isar!.writeTxn(() async {
+      await database.isar!.topics.put(topic);
+    });
+
+    state = state.copyWith(topics: [topic, ...state.topics], showBottom: false);
+  }
+
+  refresh() {
+    state = state.copyWith(
+      topics: database.isar!.topics
+          .where()
+          .sortByCreateAtDesc()
+          .limit(10)
+          .findAllSync(),
+    );
   }
 }
 

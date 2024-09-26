@@ -5,6 +5,7 @@ part 'assets.g.dart';
 @JsonSerializable()
 class Assets {
   List<AssetObj> assets = [];
+  List<String> characters = [];
 
   Assets();
 

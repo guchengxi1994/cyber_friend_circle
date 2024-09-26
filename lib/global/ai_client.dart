@@ -63,45 +63,50 @@ void startIsolate(IsolateData data) async {
     await Future.delayed(const Duration(seconds: 60));
     final topics = await isar.topics.filter().doneEqualTo(false).findAll();
     if (topics.isNotEmpty) {
-      for (final i in topics) {
-        if (i.maxReplyCount <= i.replies.length) {
-          await isar.writeTxn(() async {
+      await isar.writeTxn(() async {
+        for (final i in topics) {
+          if (i.maxReplyCount <= i.replies.length) {
             i.done = true;
             await isar.topics.put(i);
-          });
-        } else {
-          final users = await isar.users
-              .filter()
-              .not()
-              .typeEqualTo(UserType.you)
-              .findAll();
-
-          if (users.isEmpty) {
-            continue;
           }
-
-          final user = users[random.nextInt(users.length)];
-
-          await isar.writeTxn(() async {
-            final reply = await client.chat([
-              SystemChatMessage(
-                  content: "${user.getPrompt()}，请尝试回复以下用户，回复长度在50到100字。"),
-              ChatMessage.humanText("用户说: ${i.content}")
-            ]);
-            final replyText = reply.outputAsString;
-            final replyTopic = TopicReply()..content = replyText;
-            replyTopic.user.value = user;
-            i.replies.add(replyTopic);
-
-            await isar.topicReplys.put(replyTopic);
-            await replyTopic.user.save();
-            await i.replies.save();
-            await isar.topics.put(i);
-          });
-
-          data.sendPort.send(i.id);
         }
+      });
+
+      /// 修改逻辑， 每次只选择其中一个生成
+      topics.retainWhere((v) => !v.done);
+
+      if (topics.isEmpty) {
+        continue;
       }
+
+      final randomTopic = topics[random.nextInt(topics.length)];
+      final users =
+          await isar.users.filter().not().typeEqualTo(UserType.you).findAll();
+
+      if (users.isEmpty) {
+        continue;
+      }
+
+      final user = users[random.nextInt(users.length)];
+
+      await isar.writeTxn(() async {
+        final reply = await client.chat([
+          SystemChatMessage(
+              content: "${user.getPrompt()}，请尝试回复以下用户，回复长度在50到100字。"),
+          ChatMessage.humanText("用户说: ${randomTopic.content}")
+        ]);
+        final replyText = reply.outputAsString;
+        final replyTopic = TopicReply()..content = replyText;
+        replyTopic.user.value = user;
+        randomTopic.replies.add(replyTopic);
+
+        await isar.topicReplys.put(replyTopic);
+        await replyTopic.user.save();
+        await randomTopic.replies.save();
+        await isar.topics.put(randomTopic);
+      });
+
+      data.sendPort.send(randomTopic.id);
     }
   }
 }

@@ -775,8 +775,14 @@ const TopicReplySchema = CollectionSchema(
       name: r'createAt',
       type: IsarType.long,
     ),
-    r'replyType': PropertySchema(
+    r'reaction': PropertySchema(
       id: 2,
+      name: r'reaction',
+      type: IsarType.byte,
+      enumMap: _TopicReplyreactionEnumValueMap,
+    ),
+    r'replyType': PropertySchema(
+      id: 3,
       name: r'replyType',
       type: IsarType.byte,
       enumMap: _TopicReplyreplyTypeEnumValueMap,
@@ -826,7 +832,8 @@ void _topicReplySerialize(
 ) {
   writer.writeString(offsets[0], object.content);
   writer.writeLong(offsets[1], object.createAt);
-  writer.writeByte(offsets[2], object.replyType.index);
+  writer.writeByte(offsets[2], object.reaction.index);
+  writer.writeByte(offsets[3], object.replyType.index);
 }
 
 TopicReply _topicReplyDeserialize(
@@ -839,8 +846,11 @@ TopicReply _topicReplyDeserialize(
   object.content = reader.readStringOrNull(offsets[0]);
   object.createAt = reader.readLong(offsets[1]);
   object.id = id;
+  object.reaction =
+      _TopicReplyreactionValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+          Reaction.like;
   object.replyType =
-      _TopicReplyreplyTypeValueEnumMap[reader.readByteOrNull(offsets[2])] ??
+      _TopicReplyreplyTypeValueEnumMap[reader.readByteOrNull(offsets[3])] ??
           ReplyType.text;
   return object;
 }
@@ -857,6 +867,9 @@ P _topicReplyDeserializeProp<P>(
     case 1:
       return (reader.readLong(offset)) as P;
     case 2:
+      return (_TopicReplyreactionValueEnumMap[reader.readByteOrNull(offset)] ??
+          Reaction.like) as P;
+    case 3:
       return (_TopicReplyreplyTypeValueEnumMap[reader.readByteOrNull(offset)] ??
           ReplyType.text) as P;
     default:
@@ -864,6 +877,16 @@ P _topicReplyDeserializeProp<P>(
   }
 }
 
+const _TopicReplyreactionEnumValueMap = {
+  'like': 0,
+  'dislike': 1,
+  'none': 2,
+};
+const _TopicReplyreactionValueEnumMap = {
+  0: Reaction.like,
+  1: Reaction.dislike,
+  2: Reaction.none,
+};
 const _TopicReplyreplyTypeEnumValueMap = {
   'text': 0,
   'image': 1,
@@ -1225,6 +1248,60 @@ extension TopicReplyQueryFilter
     });
   }
 
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> reactionEqualTo(
+      Reaction value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'reaction',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition>
+      reactionGreaterThan(
+    Reaction value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'reaction',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> reactionLessThan(
+    Reaction value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'reaction',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> reactionBetween(
+    Reaction lower,
+    Reaction upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'reaction',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<TopicReply, TopicReply, QAfterFilterCondition> replyTypeEqualTo(
       ReplyType value) {
     return QueryBuilder.apply(this, (query) {
@@ -1325,6 +1402,18 @@ extension TopicReplyQuerySortBy
     });
   }
 
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> sortByReaction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reaction', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> sortByReactionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reaction', Sort.desc);
+    });
+  }
+
   QueryBuilder<TopicReply, TopicReply, QAfterSortBy> sortByReplyType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'replyType', Sort.asc);
@@ -1376,6 +1465,18 @@ extension TopicReplyQuerySortThenBy
     });
   }
 
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> thenByReaction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reaction', Sort.asc);
+    });
+  }
+
+  QueryBuilder<TopicReply, TopicReply, QAfterSortBy> thenByReactionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'reaction', Sort.desc);
+    });
+  }
+
   QueryBuilder<TopicReply, TopicReply, QAfterSortBy> thenByReplyType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'replyType', Sort.asc);
@@ -1404,6 +1505,12 @@ extension TopicReplyQueryWhereDistinct
     });
   }
 
+  QueryBuilder<TopicReply, TopicReply, QDistinct> distinctByReaction() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'reaction');
+    });
+  }
+
   QueryBuilder<TopicReply, TopicReply, QDistinct> distinctByReplyType() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'replyType');
@@ -1428,6 +1535,12 @@ extension TopicReplyQueryProperty
   QueryBuilder<TopicReply, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
+    });
+  }
+
+  QueryBuilder<TopicReply, Reaction, QQueryOperations> reactionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'reaction');
     });
   }
 

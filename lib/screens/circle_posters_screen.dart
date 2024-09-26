@@ -70,7 +70,7 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
 
     receivePort.listen((message) {
       if (message is int) {
-        /// TODO 刷新页面
+        ref.read(circlePostersProvider.notifier).refresh();
       }
     });
   }
@@ -199,7 +199,9 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
             Positioned(
               bottom: 5,
               child: RichTextInputField(
-                onSubmit: (String text) {},
+                onSubmit: (String text) {
+                  ref.read(circlePostersProvider.notifier).postNewTopic(text);
+                },
                 onExpandChanged: (bool e) {
                   ref.read(circlePostersProvider.notifier).changeInputExpand(e);
                 },

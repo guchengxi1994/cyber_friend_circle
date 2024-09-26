@@ -6,6 +6,8 @@ part 'topic.g.dart';
 
 enum ReplyType { text, image, animatedEmoji, emoji }
 
+enum Reaction { like, dislike, none }
+
 @collection
 class Topic {
   Id id = Isar.autoIncrement;
@@ -26,6 +28,9 @@ class TopicReply {
 
   @enumerated
   ReplyType replyType = ReplyType.text;
+
+  @enumerated
+  Reaction reaction = Reaction.none;
 
   IsarLink<User> user = IsarLink<User>();
 }
