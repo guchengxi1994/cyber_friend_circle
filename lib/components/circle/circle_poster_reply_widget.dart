@@ -35,11 +35,9 @@ class CirclePosterReplyWidget extends StatelessWidget {
                 child: Text(reply.user.value?.name ?? "N"),
               ),
               const SizedBox(height: 5),
-              FittedBox(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
-                  child: MarkdownBlock(data: reply.content ?? ""),
-                ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width - 90,
+                child: MarkdownBlock(data: reply.content ?? ""),
               ),
               const SizedBox(height: 5),
             ],
