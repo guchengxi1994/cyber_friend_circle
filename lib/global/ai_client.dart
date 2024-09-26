@@ -73,6 +73,7 @@ void startIsolate(IsolateData data) async {
       });
 
       /// 修改逻辑， 每次只选择其中一个生成
+      /// 主要是舍不得 token
       topics.retainWhere((v) => !v.done);
 
       if (topics.isEmpty) {
