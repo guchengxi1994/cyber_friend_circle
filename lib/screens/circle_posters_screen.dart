@@ -1,8 +1,10 @@
+import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:cyber_friend_circle/components/circle/circle_poster_reply_widget.dart';
 import 'package:cyber_friend_circle/components/circle/circle_poster_widget.dart';
 import 'package:cyber_friend_circle/components/circle/custom_scrollview.dart';
+import 'package:cyber_friend_circle/global/ai_client.dart';
 import 'package:cyber_friend_circle/screens/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +23,11 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  final AiClient aiClient = AiClient();
+
+  // ignore: unused_field
+  late SendPort _sendPort;
 
   @override
   initState() {
@@ -48,6 +55,23 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
 
     // 开始动画
     _controller.forward();
+
+    start();
+  }
+
+  void start() async {
+    final receivePort = ReceivePort();
+    var rootToken = RootIsolateToken.instance!;
+    await Isolate.spawn<IsolateData>(
+        startIsolate, IsolateData(receivePort.sendPort, rootToken));
+
+    receivePort.listen((message) {
+      if (message is SendPort) {
+        _sendPort = message;
+      } else {
+        print(message);
+      }
+    });
   }
 
   /// FOR TEST

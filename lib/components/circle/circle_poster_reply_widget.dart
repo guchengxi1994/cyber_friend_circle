@@ -1,7 +1,7 @@
 import 'package:cyber_friend_circle/isar/image.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 import 'avatar.dart';
 
@@ -36,7 +36,10 @@ class CirclePosterReplyWidget extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               FittedBox(
-                child: MarkdownBody(data: reply.content ?? ""),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 100,
+                  child: MarkdownBlock(data: reply.content ?? ""),
+                ),
               ),
               const SizedBox(height: 5),
             ],

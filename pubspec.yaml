@@ -15,7 +15,6 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_markdown: ^0.7.3+1
   flutter_quill: ^10.7.5
   flutter_riverpod: ^2.5.1
   isar: 
@@ -30,6 +29,7 @@ dependencies:
       url: https://github.com/guchengxi1994/langchain_lib
   logging: ^1.2.0
   markdown_quill: ^4.1.0
+  markdown_widget: ^2.3.2+6
   path_provider: ^2.1.4
   riverpod: ^2.5.1
   

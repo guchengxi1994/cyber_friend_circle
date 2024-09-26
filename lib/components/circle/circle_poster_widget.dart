@@ -2,7 +2,7 @@ import 'package:cyber_friend_circle/components/circle/avatar.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:markdown_widget/markdown_widget.dart';
 
 class CirclePoster extends StatelessWidget {
   const CirclePoster({super.key, required this.topic, required this.user});
@@ -38,7 +38,10 @@ class CirclePoster extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           FittedBox(
-            child: MarkdownBody(data: topic.content ?? ""),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width - 100,
+              child: MarkdownBlock(data: topic.content ?? ""),
+            ),
           ),
           const SizedBox(height: 10),
           Row(

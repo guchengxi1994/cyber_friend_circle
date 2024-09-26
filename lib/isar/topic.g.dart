@@ -26,6 +26,16 @@ const TopicSchema = CollectionSchema(
       id: 1,
       name: r'createAt',
       type: IsarType.long,
+    ),
+    r'done': PropertySchema(
+      id: 2,
+      name: r'done',
+      type: IsarType.bool,
+    ),
+    r'maxReplyCount': PropertySchema(
+      id: 3,
+      name: r'maxReplyCount',
+      type: IsarType.long,
     )
   },
   estimateSize: _topicEstimateSize,
@@ -72,6 +82,8 @@ void _topicSerialize(
 ) {
   writer.writeString(offsets[0], object.content);
   writer.writeLong(offsets[1], object.createAt);
+  writer.writeBool(offsets[2], object.done);
+  writer.writeLong(offsets[3], object.maxReplyCount);
 }
 
 Topic _topicDeserialize(
@@ -83,7 +95,9 @@ Topic _topicDeserialize(
   final object = Topic();
   object.content = reader.readStringOrNull(offsets[0]);
   object.createAt = reader.readLong(offsets[1]);
+  object.done = reader.readBool(offsets[2]);
   object.id = id;
+  object.maxReplyCount = reader.readLong(offsets[3]);
   return object;
 }
 
@@ -97,6 +111,10 @@ P _topicDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
+      return (reader.readLong(offset)) as P;
+    case 2:
+      return (reader.readBool(offset)) as P;
+    case 3:
       return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -390,6 +408,15 @@ extension TopicQueryFilter on QueryBuilder<Topic, Topic, QFilterCondition> {
     });
   }
 
+  QueryBuilder<Topic, Topic, QAfterFilterCondition> doneEqualTo(bool value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'done',
+        value: value,
+      ));
+    });
+  }
+
   QueryBuilder<Topic, Topic, QAfterFilterCondition> idEqualTo(Id value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
@@ -434,6 +461,59 @@ extension TopicQueryFilter on QueryBuilder<Topic, Topic, QFilterCondition> {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterFilterCondition> maxReplyCountEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'maxReplyCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterFilterCondition> maxReplyCountGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'maxReplyCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterFilterCondition> maxReplyCountLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'maxReplyCount',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterFilterCondition> maxReplyCountBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'maxReplyCount',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -527,6 +607,30 @@ extension TopicQuerySortBy on QueryBuilder<Topic, Topic, QSortBy> {
       return query.addSortBy(r'createAt', Sort.desc);
     });
   }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> sortByDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'done', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> sortByDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'done', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> sortByMaxReplyCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxReplyCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> sortByMaxReplyCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxReplyCount', Sort.desc);
+    });
+  }
 }
 
 extension TopicQuerySortThenBy on QueryBuilder<Topic, Topic, QSortThenBy> {
@@ -554,6 +658,18 @@ extension TopicQuerySortThenBy on QueryBuilder<Topic, Topic, QSortThenBy> {
     });
   }
 
+  QueryBuilder<Topic, Topic, QAfterSortBy> thenByDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'done', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> thenByDoneDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'done', Sort.desc);
+    });
+  }
+
   QueryBuilder<Topic, Topic, QAfterSortBy> thenById() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.asc);
@@ -563,6 +679,18 @@ extension TopicQuerySortThenBy on QueryBuilder<Topic, Topic, QSortThenBy> {
   QueryBuilder<Topic, Topic, QAfterSortBy> thenByIdDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'id', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> thenByMaxReplyCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxReplyCount', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QAfterSortBy> thenByMaxReplyCountDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'maxReplyCount', Sort.desc);
     });
   }
 }
@@ -578,6 +706,18 @@ extension TopicQueryWhereDistinct on QueryBuilder<Topic, Topic, QDistinct> {
   QueryBuilder<Topic, Topic, QDistinct> distinctByCreateAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createAt');
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QDistinct> distinctByDone() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'done');
+    });
+  }
+
+  QueryBuilder<Topic, Topic, QDistinct> distinctByMaxReplyCount() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'maxReplyCount');
     });
   }
 }
@@ -598,6 +738,18 @@ extension TopicQueryProperty on QueryBuilder<Topic, Topic, QQueryProperty> {
   QueryBuilder<Topic, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
+    });
+  }
+
+  QueryBuilder<Topic, bool, QQueryOperations> doneProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'done');
+    });
+  }
+
+  QueryBuilder<Topic, int, QQueryOperations> maxReplyCountProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'maxReplyCount');
     });
   }
 }

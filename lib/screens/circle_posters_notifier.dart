@@ -43,7 +43,8 @@ class CirclePostersNotifier extends AutoDisposeNotifier<CirclePostersState> {
 
 因为加班没有加班费。😀
 """
-      ..createAt = DateTime.now().millisecondsSinceEpoch;
+      ..createAt = DateTime.now().millisecondsSinceEpoch
+      ..maxReplyCount = 2;
 
     final TopicReply reply = TopicReply()
       ..content = "😀"

@@ -20,5 +20,22 @@ class User {
   @Enumerated(EnumType.name)
   ImageType avatarType = ImageType.asset;
 
+  List<String> characters = [];
+
   int createAt = DateTime.now().millisecondsSinceEpoch;
+
+  String getPrompt() {
+    if (type == UserType.you) {
+      return "";
+    }
+
+    String t = type == UserType.friend ? "好友" : "损友";
+
+    if (characters.isEmpty) {
+      return "你的名字叫$name,你是用户的$t。";
+    }
+    String c = "你是一个${characters.join("，")}的人";
+
+    return "你的名字叫$name,你是用户的$t，$c。";
+  }
 }

@@ -12,6 +12,9 @@ class Topic {
   String? content;
   int createAt = DateTime.now().millisecondsSinceEpoch;
 
+  int maxReplyCount = 1;
+  bool done = false;
+
   IsarLinks<TopicReply> replies = IsarLinks<TopicReply>();
 }
 
