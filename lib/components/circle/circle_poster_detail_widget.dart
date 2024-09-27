@@ -48,19 +48,21 @@ class _CirclePosterDetailWidgetState
       body: Stack(
         children: [
           SizedBox(
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width - 60,
             height: MediaQuery.of(context).size.height,
           ),
           AnimatedPositioned(
             onEnd: () {
-              setState(() {
-                isAtTop = !isAtTop;
-              });
+              if (!isAtTop && top == 0) {
+                setState(() {
+                  isAtTop = true;
+                });
+              }
             },
             top: top,
             duration: const Duration(milliseconds: 500),
             // height: widget.height,
-            width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width - 60,
             curve: Curves.easeInOut,
             child: SizedBox(
               height: MediaQuery.of(context).size.height - top,

@@ -36,13 +36,13 @@ class CirclePosterReplyWidget extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               SizedBox(
-                width: MediaQuery.of(context).size.width - 90,
+                width: MediaQuery.of(context).size.width - 150,
                 child: MarkdownBlock(data: reply.content ?? ""),
               ),
               const SizedBox(height: 5),
               SizedBox(
                 height: 20,
-                width: MediaQuery.of(context).size.width - 90,
+                width: MediaQuery.of(context).size.width - 150,
                 child: Row(
                   children: [
                     Text(DateTime.fromMillisecondsSinceEpoch(reply.createAt)

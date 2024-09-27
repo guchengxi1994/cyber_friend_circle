@@ -13,7 +13,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 
 import '../../components/text_input/rich_text_input_field.dart';
-import '../../global/global.dart';
+import 'circle_posters_state.dart';
 
 class CirclePostersScreen extends ConsumerStatefulWidget {
   const CirclePostersScreen({super.key});
@@ -59,21 +59,15 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
 
     // 开始动画
     _controller.forward();
-
-    start();
   }
 
-  void start() async {
-    final receivePort = ReceivePort();
-    var rootToken = RootIsolateToken.instance!;
-    await Isolate.spawn<IsolateData>(
-        startIsolate, IsolateData(receivePort.sendPort, rootToken));
+  @override
+  void dispose() {
+    if (mounted) {
+      _controller.dispose();
+    }
 
-    receivePort.listen((message) {
-      if (message is int) {
-        ref.read(circlePostersProvider.notifier).refresh();
-      }
-    });
+    super.dispose();
   }
 
   /// FOR TEST
@@ -97,119 +91,7 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
 
     return SafeArea(
         child: Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.height,
-            color: Colors.grey[300],
-            child: GestureDetector(
-              onTap: () {
-                if (state.showBottom) {
-                  ref.read(circlePostersProvider.notifier).toggleBottom();
-                }
-              },
-              child: CustomScrollview(
-                header: ClipRect(
-                  child: Stack(
-                    children: [
-                      AnimatedBuilder(
-                        animation: _animation,
-                        builder: (context, child) {
-                          return Transform.scale(
-                            scale: _animation.value,
-                            child: Image.asset(
-                              "assets/bgs/bg1.jpeg",
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.cover,
-                            ),
-                          );
-                        },
-                      ),
-                      if (!state.inputExpaned)
-                        Positioned(
-                          top: 30,
-                          right: 10,
-                          child: InkWell(
-                            onTap: () {
-                              ref
-                                  .read(circlePostersProvider.notifier)
-                                  .toggleBottom();
-                            },
-                            child: Icon(
-                              !state.showBottom ? Icons.add : Icons.remove,
-                              color: Colors.white,
-                            ),
-                          ),
-                        )
-                    ],
-                  ),
-                ),
-                // body: Column(
-                //   children: [
-                //     CirclePoster(
-                //       topic: state.topics[0],
-                //       user: ref.read(circlePostersProvider.notifier).user,
-                //     ),
-                //     ...state.topics[0].replies
-                //         .map((e) => CirclePosterReplyWidget(reply: e))
-                //   ],
-                // )
-                body: Column(
-                  children: state.topics
-                      .mapIndexed((i, e) => CirclePoster(
-                          key: keys[i],
-                          onTap: () {
-                            final v = _getPosition(keys[i]);
-                            Navigator.of(context).push(noAnimationRoute(
-                              CirclePosterDetailWidget(
-                                top: v.$1,
-                                height: v.$2,
-                                topic: e,
-                                user: ref
-                                    .read(circlePostersProvider.notifier)
-                                    .user,
-                              ),
-                            ));
-                          },
-                          topic: e,
-                          user: ref.read(circlePostersProvider.notifier).user))
-                      .toList(),
-                ),
-              ),
-            ),
-          ),
-          if (state.showBottom)
-            Positioned(
-              bottom: 0,
-              child: ClipRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(
-                    sigmaX: 10,
-                    sigmaY: 10,
-                  ),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 120,
-                    color: Colors.white.withOpacity(0.05),
-                  ),
-                ),
-              ),
-            ),
-          if (state.showBottom)
-            Positioned(
-              bottom: 5,
-              child: RichTextInputField(
-                onSubmit: (String text) {
-                  ref.read(circlePostersProvider.notifier).postNewTopic(text);
-                },
-                onExpandChanged: (bool e) {
-                  ref.read(circlePostersProvider.notifier).changeInputExpand(e);
-                },
-              ),
-            )
-        ],
-      ),
+      body: buildDefaultView(state),
     ));
   }
 
@@ -222,5 +104,120 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
     final size = renderBox.size;
 
     return (position.dy, size.height);
+  }
+
+  Widget buildDefaultView(CirclePostersState state) {
+    return Stack(
+      children: [
+        SizedBox(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          // color: Colors.grey[300],
+          child: GestureDetector(
+            onTap: () {
+              if (state.showBottom) {
+                ref.read(circlePostersProvider.notifier).toggleBottom();
+              }
+            },
+            child: CustomScrollview(
+              header: ClipRect(
+                child: Stack(
+                  children: [
+                    AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Transform.scale(
+                          scale: _animation.value,
+                          child: Image.asset(
+                            "assets/bgs/bg1.jpeg",
+                            width: MediaQuery.of(context).size.width,
+                            fit: BoxFit.cover,
+                          ),
+                        );
+                      },
+                    ),
+                    if (!state.inputExpaned)
+                      Positioned(
+                        top: 30,
+                        right: 10,
+                        child: InkWell(
+                          onTap: () {
+                            ref
+                                .read(circlePostersProvider.notifier)
+                                .toggleBottom();
+                          },
+                          child: Icon(
+                            !state.showBottom ? Icons.add : Icons.remove,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                  ],
+                ),
+              ),
+              body: Column(
+                children: state.topics
+                    .mapIndexed((i, e) => CirclePoster(
+                        key: keys[i],
+                        onTap: () {
+                          final v = _getPosition(keys[i]);
+                          showGeneralDialog(
+                              barrierColor: Colors.transparent,
+                              context: context,
+                              pageBuilder: (c, _, __) {
+                                return Material(
+                                  color: Colors.transparent,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 60),
+                                    child: CirclePosterDetailWidget(
+                                      top: v.$1,
+                                      height: v.$2,
+                                      topic: e,
+                                      user: ref
+                                          .read(circlePostersProvider.notifier)
+                                          .user,
+                                    ),
+                                  ),
+                                );
+                              });
+                        },
+                        topic: e,
+                        user: ref.read(circlePostersProvider.notifier).user))
+                    .toList(),
+              ),
+            ),
+          ),
+        ),
+        if (state.showBottom)
+          Positioned(
+            bottom: 0,
+            child: ClipRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 10,
+                  sigmaY: 10,
+                ),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 120,
+                  color: Colors.white.withOpacity(0.05),
+                ),
+              ),
+            ),
+          ),
+        if (state.showBottom)
+          Positioned(
+            bottom: 5,
+            child: RichTextInputField(
+              onSubmit: (String text) {
+                ref.read(circlePostersProvider.notifier).postNewTopic(text);
+              },
+              onExpandChanged: (bool e) {
+                ref.read(circlePostersProvider.notifier).changeInputExpand(e);
+              },
+            ),
+          )
+      ],
+    );
   }
 }

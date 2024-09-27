@@ -9,10 +9,22 @@ class FriendList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: friends.length,
-        itemBuilder: (c, i) {
-          return FriendItemWidget(user: friends[i]);
-        });
+    final width = MediaQuery.of(context).size.width;
+
+    if (width <= 500) {
+      return ListView.builder(
+          itemCount: friends.length,
+          itemBuilder: (c, i) {
+            return FriendItemWidget(user: friends[i]);
+          });
+    }
+
+    return Wrap(
+      children: friends
+          .map((v) => FriendItemWidget(
+                user: v,
+              ))
+          .toList(),
+    );
   }
 }
