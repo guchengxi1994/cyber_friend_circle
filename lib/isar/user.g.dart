@@ -38,13 +38,18 @@ const UserSchema = CollectionSchema(
       name: r'createAt',
       type: IsarType.long,
     ),
-    r'name': PropertySchema(
+    r'lastActiveAt': PropertySchema(
       id: 4,
+      name: r'lastActiveAt',
+      type: IsarType.long,
+    ),
+    r'name': PropertySchema(
+      id: 5,
       name: r'name',
       type: IsarType.string,
     ),
     r'type': PropertySchema(
-      id: 5,
+      id: 6,
       name: r'type',
       type: IsarType.string,
       enumMap: _UsertypeEnumValueMap,
@@ -118,8 +123,9 @@ void _userSerialize(
   writer.writeString(offsets[1], object.avatarType.name);
   writer.writeStringList(offsets[2], object.characters);
   writer.writeLong(offsets[3], object.createAt);
-  writer.writeString(offsets[4], object.name);
-  writer.writeString(offsets[5], object.type.name);
+  writer.writeLong(offsets[4], object.lastActiveAt);
+  writer.writeString(offsets[5], object.name);
+  writer.writeString(offsets[6], object.type.name);
 }
 
 User _userDeserialize(
@@ -136,8 +142,9 @@ User _userDeserialize(
   object.characters = reader.readStringList(offsets[2]) ?? [];
   object.createAt = reader.readLong(offsets[3]);
   object.id = id;
-  object.name = reader.readStringOrNull(offsets[4]);
-  object.type = _UsertypeValueEnumMap[reader.readStringOrNull(offsets[5])] ??
+  object.lastActiveAt = reader.readLong(offsets[4]);
+  object.name = reader.readStringOrNull(offsets[5]);
+  object.type = _UsertypeValueEnumMap[reader.readStringOrNull(offsets[6])] ??
       UserType.you;
   return object;
 }
@@ -159,8 +166,10 @@ P _userDeserializeProp<P>(
     case 3:
       return (reader.readLong(offset)) as P;
     case 4:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 5:
+      return (reader.readStringOrNull(offset)) as P;
+    case 6:
       return (_UsertypeValueEnumMap[reader.readStringOrNull(offset)] ??
           UserType.you) as P;
     default:
@@ -989,6 +998,59 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
+  QueryBuilder<User, User, QAfterFilterCondition> lastActiveAtEqualTo(
+      int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'lastActiveAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> lastActiveAtGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'lastActiveAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> lastActiveAtLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'lastActiveAt',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> lastActiveAtBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'lastActiveAt',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
+
   QueryBuilder<User, User, QAfterFilterCondition> nameIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -1303,6 +1365,18 @@ extension UserQuerySortBy on QueryBuilder<User, User, QSortBy> {
     });
   }
 
+  QueryBuilder<User, User, QAfterSortBy> sortByLastActiveAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActiveAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> sortByLastActiveAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActiveAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<User, User, QAfterSortBy> sortByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -1377,6 +1451,18 @@ extension UserQuerySortThenBy on QueryBuilder<User, User, QSortThenBy> {
     });
   }
 
+  QueryBuilder<User, User, QAfterSortBy> thenByLastActiveAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActiveAt', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> thenByLastActiveAtDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'lastActiveAt', Sort.desc);
+    });
+  }
+
   QueryBuilder<User, User, QAfterSortBy> thenByName() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.asc);
@@ -1429,6 +1515,12 @@ extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
     });
   }
 
+  QueryBuilder<User, User, QDistinct> distinctByLastActiveAt() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'lastActiveAt');
+    });
+  }
+
   QueryBuilder<User, User, QDistinct> distinctByName(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1472,6 +1564,12 @@ extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
   QueryBuilder<User, int, QQueryOperations> createAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createAt');
+    });
+  }
+
+  QueryBuilder<User, int, QQueryOperations> lastActiveAtProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'lastActiveAt');
     });
   }
 

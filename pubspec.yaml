@@ -11,12 +11,14 @@ dependencies:
   animated_emoji: ^3.1.0
   cupertino_icons: ^1.0.8
   extended_image: ^8.3.0
+  expand: ^1.1.2
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
   flutter_quill: ^10.7.5
   flutter_riverpod: ^2.5.1
+  flutter_zoom_drawer: ^3.2.0
   isar: 
     version: 3.1.8
     hosted: https://pub.isar-community.dev/
@@ -32,6 +34,7 @@ dependencies:
   markdown_widget: ^2.3.2+6
   path_provider: ^2.1.4
   riverpod: ^2.5.1
+  toastification: ^2.3.0
   
 
 dev_dependencies:

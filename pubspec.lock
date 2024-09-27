@@ -262,6 +262,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  expand:
+    dependency: "direct main"
+    description:
+      name: expand
+      sha256: "529b7b780b2a695290186ffab8033264369487fcf670b8916dca0c1bec5e99e7"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.1.2"
   extended_image:
     dependency: "direct main"
     description:
@@ -450,6 +458,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_zoom_drawer:
+    dependency: "direct main"
+    description:
+      name: flutter_zoom_drawer
+      sha256: "5a3708548868463fb36e0e3171761ab7cb513df88d2f14053802812d2e855060"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.0"
   freezed_annotation:
     dependency: transitive
     description:
@@ -530,6 +546,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  iconsax_flutter:
+    dependency: transitive
+    description:
+      name: iconsax_flutter
+      sha256: "95b65699da8ea98f87c5d232f06b0debaaf1ec1332b697e4d90969ec9a93037d"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.0.0"
   image:
     dependency: transitive
     description:
@@ -827,6 +851,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.3.0"
+  pausable_timer:
+    dependency: transitive
+    description:
+      name: pausable_timer
+      sha256: "6ef1a95441ec3439de6fb63f39a011b67e693198e7dae14e20675c3c00e86074"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.0+3"
   petitparser:
     dependency: transitive
     description:
@@ -1064,6 +1096,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.1"
+  toastification:
+    dependency: "direct main"
+    description:
+      name: toastification
+      sha256: "4d97fbfa463dfe83691044cba9f37cb185a79bb9205cfecb655fa1f6be126a13"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.3.0"
   typed_data:
     dependency: transitive
     description:

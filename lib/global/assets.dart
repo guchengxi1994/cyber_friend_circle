@@ -5,7 +5,12 @@ part 'assets.g.dart';
 @JsonSerializable()
 class Assets {
   List<AssetObj> assets = [];
-  List<String> characters = [];
+
+  @JsonKey(name: "characters-good")
+  List<String> goodCharacters = [];
+
+  @JsonKey(name: "characters-bad")
+  List<String> badCharacters = [];
 
   Assets();
 

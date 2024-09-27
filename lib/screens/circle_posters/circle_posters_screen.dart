@@ -6,13 +6,14 @@ import 'package:cyber_friend_circle/components/circle/circle_poster_detail_widge
 import 'package:cyber_friend_circle/components/circle/circle_poster_widget.dart';
 import 'package:cyber_friend_circle/components/circle/custom_scrollview.dart';
 import 'package:cyber_friend_circle/global/ai_client.dart';
-import 'package:cyber_friend_circle/screens/circle_posters_notifier.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
 
-import '../components/text_input/rich_text_input_field.dart';
+import '../../components/text_input/rich_text_input_field.dart';
+import '../../global/global.dart';
 
 class CirclePostersScreen extends ConsumerStatefulWidget {
   const CirclePostersScreen({super.key});
@@ -160,7 +161,7 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
                           key: keys[i],
                           onTap: () {
                             final v = _getPosition(keys[i]);
-                            Navigator.of(context).push(_noAnimationRoute(
+                            Navigator.of(context).push(noAnimationRoute(
                               CirclePosterDetailWidget(
                                 top: v.$1,
                                 height: v.$2,
@@ -221,14 +222,5 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
     final size = renderBox.size;
 
     return (position.dy, size.height);
-  }
-
-  // 自定义无动画的路由
-  Route _noAnimationRoute(Widget page) {
-    return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => page,
-      transitionDuration: Duration.zero, // 禁用动画
-      reverseTransitionDuration: Duration.zero, // 禁用返回动画
-    );
   }
 }

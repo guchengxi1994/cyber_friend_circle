@@ -24,6 +24,8 @@ class User {
 
   int createAt = DateTime.now().millisecondsSinceEpoch;
 
+  int lastActiveAt = DateTime.now().millisecondsSinceEpoch;
+
   String getPrompt() {
     if (type == UserType.you) {
       return "";

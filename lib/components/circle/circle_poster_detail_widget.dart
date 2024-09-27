@@ -68,29 +68,48 @@ class _CirclePosterDetailWidgetState
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    CirclePoster(topic: widget.topic, user: widget.user),
-                    ...replies.map((e) {
-                      return CirclePosterReplyWidget(reply: e);
-                    }),
+                    CirclePoster(
+                      topic: widget.topic,
+                      user: widget.user,
+                      onTap: () {
+                        if (isAtTop) {
+                          setState(() {
+                            top = widget.top;
+                            isAtTop = !isAtTop;
+                          });
+
+                          Future.delayed(
+                                  const Duration(milliseconds: 500), () {})
+                              .then((_) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.of(context).pop();
+                          });
+                        }
+                      },
+                    ),
+                    if (isAtTop)
+                      ...replies.map((e) {
+                        return CirclePosterReplyWidget(reply: e);
+                      }),
                   ],
                 ),
               ),
             ),
           ),
-          if (isAtTop)
-            Positioned(
-              top: 30,
-              right: 10,
-              child: InkWell(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(
-                  Icons.close,
-                  color: Colors.black,
-                ),
-              ),
-            )
+          // if (isAtTop)
+          //   Positioned(
+          //     top: 30,
+          //     right: 10,
+          //     child: InkWell(
+          //       onTap: () {
+          //         Navigator.of(context).pop();
+          //       },
+          //       child: const Icon(
+          //         Icons.close,
+          //         color: Colors.black,
+          //       ),
+          //     ),
+          //   )
         ],
       ),
     );

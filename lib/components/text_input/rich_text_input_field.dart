@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cyber_friend_circle/global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown_quill/markdown_quill.dart';
 
+import 'emoji_selector_widget.dart';
 import 'rich_text_input_notifier.dart';
 
 typedef OnSubmit = void Function(String text);
@@ -60,7 +62,7 @@ class _RichTextInputFieldState extends ConsumerState<RichTextInputField> {
               ref.read(richTextInputProvider.notifier).toggleExpand();
               widget.onExpandChanged(!state.expanded);
             } else {
-              /// TODO show some toast
+              ToastUtils.error(context, title: "桌面端展开富文本编辑器请将窗口最大化");
             }
           }
         },
@@ -103,25 +105,69 @@ class _RichTextInputFieldState extends ConsumerState<RichTextInputField> {
                             : 75,
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: GestureDetector(
-                              onLongPress: () {
-                                /// [避免触发父级的`onLongPress`事件]
-                              },
-                              child: Center(
-                                child: SizedBox(
-                                  child: IconButton(
-                                    onPressed: () {
-                                      final delta =
-                                          _controller.document.toDelta();
-                                      widget.onSubmit(deltaToMd.convert(delta));
-                                    },
-                                    icon: Transform.rotate(
-                                      angle: -3.14 / 2,
-                                      child: const Icon(Icons.send),
+                          child: Row(
+                            children: [
+                              GestureDetector(
+                                  onLongPress: () {
+                                    /// [避免触发父级的`onLongPress`事件]
+                                  },
+                                  child: Center(
+                                    child: SizedBox(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              barrierDismissible: true,
+                                              builder: (c) {
+                                                return EmojiSelectorWidget(
+                                                  onEmojiSelected: (emoji) {
+                                                    final currentPosition =
+                                                        _controller.selection
+                                                            .baseOffset; // 获取光标位置
+                                                    if (currentPosition == -1) {
+                                                      return;
+                                                    }
+
+                                                    _controller.document.insert(
+                                                        currentPosition, emoji);
+                                                    // 更新光标位置到插入文本后
+                                                    _controller.updateSelection(
+                                                      TextSelection.collapsed(
+                                                          offset:
+                                                              currentPosition +
+                                                                  emoji.length),
+                                                      ChangeSource.local,
+                                                    );
+                                                  },
+                                                );
+                                              });
+                                        },
+                                        icon: const Icon(Icons.emoji_emotions),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              )),
+                                  )),
+                              GestureDetector(
+                                  onLongPress: () {
+                                    /// [避免触发父级的`onLongPress`事件]
+                                  },
+                                  child: Center(
+                                    child: SizedBox(
+                                      child: IconButton(
+                                        onPressed: () {
+                                          final delta =
+                                              _controller.document.toDelta();
+                                          widget.onSubmit(
+                                              deltaToMd.convert(delta));
+                                        },
+                                        icon: Transform.rotate(
+                                          angle: -3.14 / 2,
+                                          child: const Icon(Icons.send),
+                                        ),
+                                      ),
+                                    ),
+                                  ))
+                            ],
+                          ),
                         ),
                       ),
                     ],

@@ -10,12 +10,17 @@ Assets _$AssetsFromJson(Map<String, dynamic> json) => Assets()
   ..assets = (json['assets'] as List<dynamic>)
       .map((e) => AssetObj.fromJson(e as Map<String, dynamic>))
       .toList()
-  ..characters =
-      (json['characters'] as List<dynamic>).map((e) => e as String).toList();
+  ..goodCharacters = (json['characters-good'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList()
+  ..badCharacters = (json['characters-bad'] as List<dynamic>)
+      .map((e) => e as String)
+      .toList();
 
 Map<String, dynamic> _$AssetsToJson(Assets instance) => <String, dynamic>{
       'assets': instance.assets,
-      'characters': instance.characters,
+      'characters-good': instance.goodCharacters,
+      'characters-bad': instance.badCharacters,
     };
 
 AssetObj _$AssetObjFromJson(Map<String, dynamic> json) => AssetObj()

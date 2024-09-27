@@ -5,6 +5,7 @@ import 'package:flutter_quill/translations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logging/logging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:toastification/toastification.dart';
 
 import 'global/ai_client.dart';
 import 'global/dev_utils.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_localizations/flutter_localizations.dart'
         GlobalWidgetsLocalizations;
 
 import 'isar/database.dart';
-import 'screens/circle_posters_screen.dart';
+import 'screens/circle_posters/circle_posters_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,9 @@ void main() async {
   await client.initOpenAi(DevUtils.env);
 
   runApp(const ProviderScope(
-    child: MyApp(),
+    child: ToastificationWrapper(
+      child: MyApp(),
+    ),
   ));
 }
 

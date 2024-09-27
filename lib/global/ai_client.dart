@@ -100,7 +100,9 @@ void startIsolate(IsolateData data) async {
         final replyTopic = TopicReply()..content = replyText;
         replyTopic.user.value = user;
         randomTopic.replies.add(replyTopic);
+        user.lastActiveAt = DateTime.now().millisecondsSinceEpoch;
 
+        await isar.users.put(user);
         await isar.topicReplys.put(replyTopic);
         await replyTopic.user.save();
         await randomTopic.replies.save();

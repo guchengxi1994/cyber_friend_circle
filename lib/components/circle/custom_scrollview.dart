@@ -1,4 +1,4 @@
-import 'package:cyber_friend_circle/screens/circle_posters_notifier.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
