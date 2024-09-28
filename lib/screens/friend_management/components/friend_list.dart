@@ -20,6 +20,8 @@ class FriendList extends StatelessWidget {
     }
 
     return Wrap(
+      spacing: 20,
+      runSpacing: 20,
       children: friends
           .map((v) => FriendItemWidget(
                 user: v,

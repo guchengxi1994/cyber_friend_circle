@@ -38,7 +38,7 @@ class User {
     if (characters.isEmpty) {
       return "你的名字叫$name,你是用户的$t。";
     }
-    String c = "你是一个${characters.join("，")}的人";
+    String c = "你是一个${characters.join("，")}人";
 
     return "你的名字叫$name,你是用户的$t，$c。";
   }

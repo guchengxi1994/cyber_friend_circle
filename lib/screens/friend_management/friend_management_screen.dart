@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'components/new_friend_creation.dart';
 import 'friend_management_notifier.dart';
+import 'new_friend_notifier.dart';
 
 class FriendManagementScreen extends ConsumerWidget {
   const FriendManagementScreen({super.key});
@@ -29,9 +30,17 @@ class FriendManagementScreen extends ConsumerWidget {
               context: context,
               pageBuilder: (c, _, __) {
                 return const Center(
-                  child: NewFriemdCreation(),
+                  child: NewFriendCreation(),
                 );
-              });
+              }).then((v) {
+            if (v == null) {
+              return;
+            }
+
+            ref
+                .read(friendManagementProvider.notifier)
+                .addFriend(v as NewFriendState);
+          });
         },
         tooltip: '添加好友',
         child: const Icon(Icons.add),

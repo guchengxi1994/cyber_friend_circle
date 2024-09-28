@@ -7,10 +7,8 @@ import '../new_friend_notifier.dart';
 typedef OnItemSelect = void Function(String url);
 
 class NewFriendAvatarSelection extends ConsumerStatefulWidget {
-  const NewFriendAvatarSelection(
-      {super.key, required this.url, required this.onItemSelect});
+  const NewFriendAvatarSelection({super.key, required this.url});
   final String url;
-  final OnItemSelect onItemSelect;
 
   @override
   ConsumerState<NewFriendAvatarSelection> createState() =>
@@ -50,7 +48,7 @@ class _NewFriendAvatarSelectionState
         _controller.reverse();
       },
       child: badges.Badge(
-        showBadge: state == widget.url,
+        showBadge: state.url == widget.url,
         badgeContent: Icon(
           Icons.check,
           size: 10,

@@ -1,5 +1,10 @@
 # cyber_friend_circle
 
+## changelogs
+
+* 0.1.1 2024-09-28
+  > feat: 增加了添加用户的功能
+
 # 赛博朋友圈
 
 ![image-20240928134354653](./images/v0.1/image-20240928134354653.png)
