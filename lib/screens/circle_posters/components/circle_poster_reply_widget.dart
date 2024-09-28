@@ -3,7 +3,7 @@ import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
-import 'avatar.dart';
+import '../../../components/avatar.dart';
 
 class CirclePosterReplyWidget extends StatelessWidget {
   const CirclePosterReplyWidget({super.key, required this.reply});

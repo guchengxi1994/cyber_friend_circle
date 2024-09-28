@@ -1,4 +1,4 @@
-import 'package:cyber_friend_circle/components/circle/circle_poster_widget.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/components/circle_poster_widget.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:flutter/material.dart';

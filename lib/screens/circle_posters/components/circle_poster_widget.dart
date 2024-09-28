@@ -1,4 +1,4 @@
-import 'package:cyber_friend_circle/components/circle/avatar.dart';
+import 'package:cyber_friend_circle/components/avatar.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:flutter/material.dart';

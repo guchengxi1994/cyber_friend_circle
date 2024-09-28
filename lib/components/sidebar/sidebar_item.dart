@@ -27,15 +27,19 @@ class SidebarItemWidget extends ConsumerWidget {
     final selectedIndex = ref.watch(sidebarProvider);
 
     return GestureDetector(
-      child: Container(
-        margin: const EdgeInsets.only(top: 10, bottom: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(4),
-          color: selectedIndex == item.index ? Colors.grey[200] : Colors.white,
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: Container(
+          margin: const EdgeInsets.only(top: 10, bottom: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4),
+            color:
+                selectedIndex == item.index ? Colors.grey[200] : Colors.white,
+          ),
+          width: 30,
+          height: 30,
+          child: selectedIndex == item.index ? item.icon : item.iconInactive,
         ),
-        width: 30,
-        height: 30,
-        child: selectedIndex == item.index ? item.icon : item.iconInactive,
       ),
       onTap: () {
         item.onClick(item.index);

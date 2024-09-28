@@ -26,6 +26,8 @@ class User {
 
   int lastActiveAt = DateTime.now().millisecondsSinceEpoch;
 
+  String personalTagline = "一个努力追求卓越的平常人。";
+
   String getPrompt() {
     if (type == UserType.you) {
       return "";

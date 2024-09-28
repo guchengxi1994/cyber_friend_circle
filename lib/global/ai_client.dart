@@ -60,16 +60,18 @@ void startIsolate(IsolateData data) async {
   final isar = database.isar!;
 
   while (true) {
-    await Future.delayed(const Duration(seconds: 60));
+    await Future.delayed(const Duration(seconds: 10));
     final topics = await isar.topics.filter().doneEqualTo(false).findAll();
     if (topics.isNotEmpty) {
-      await isar.writeTxn(() async {
-        for (final i in topics) {
-          if (i.maxReplyCount <= i.replies.length) {
-            i.done = true;
-            await isar.topics.put(i);
-          }
+      for (final i in topics) {
+        if (i.maxReplyCount <= i.replies.length) {
+          i.done = true;
+          // await isar.topics.put(i);
         }
+      }
+
+      await isar.writeTxn(() async {
+        await isar.topics.putAll(topics);
       });
 
       /// 修改逻辑， 每次只选择其中一个生成

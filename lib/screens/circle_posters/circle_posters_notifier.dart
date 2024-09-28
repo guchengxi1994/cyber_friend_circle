@@ -32,14 +32,23 @@ class CirclePostersNotifier extends AutoDisposeNotifier<CirclePostersState> {
       ..name = "xiaoshuyui"
       ..avatar = "assets/avatars/f1.webp"
       ..type = UserType.you
-      ..avatarType = ImageType.asset;
+      ..avatarType = ImageType.asset
+      ..personalTagline = "一个努力追求卓越的平常人。";
 
     final user2 = User()
       ..id = 2
       ..name = "friend"
       ..avatar = "assets/avatars/f2.webp"
       ..type = UserType.friend
-      ..avatarType = ImageType.asset;
+      ..avatarType = ImageType.asset
+      ..personalTagline = "一个努力追求卓越的平常人。"
+      ..characters = [
+        "善良的",
+        "温和的",
+        "开朗的",
+        "勇敢的",
+        "诚实的",
+      ];
 
     final topic = Topic()
       ..content = """

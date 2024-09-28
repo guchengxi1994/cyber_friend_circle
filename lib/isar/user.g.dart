@@ -48,8 +48,13 @@ const UserSchema = CollectionSchema(
       name: r'name',
       type: IsarType.string,
     ),
-    r'type': PropertySchema(
+    r'personalTagline': PropertySchema(
       id: 6,
+      name: r'personalTagline',
+      type: IsarType.string,
+    ),
+    r'type': PropertySchema(
+      id: 7,
       name: r'type',
       type: IsarType.string,
       enumMap: _UsertypeEnumValueMap,
@@ -109,6 +114,7 @@ int _userEstimateSize(
       bytesCount += 3 + value.length * 3;
     }
   }
+  bytesCount += 3 + object.personalTagline.length * 3;
   bytesCount += 3 + object.type.name.length * 3;
   return bytesCount;
 }
@@ -125,7 +131,8 @@ void _userSerialize(
   writer.writeLong(offsets[3], object.createAt);
   writer.writeLong(offsets[4], object.lastActiveAt);
   writer.writeString(offsets[5], object.name);
-  writer.writeString(offsets[6], object.type.name);
+  writer.writeString(offsets[6], object.personalTagline);
+  writer.writeString(offsets[7], object.type.name);
 }
 
 User _userDeserialize(
@@ -144,7 +151,8 @@ User _userDeserialize(
   object.id = id;
   object.lastActiveAt = reader.readLong(offsets[4]);
   object.name = reader.readStringOrNull(offsets[5]);
-  object.type = _UsertypeValueEnumMap[reader.readStringOrNull(offsets[6])] ??
+  object.personalTagline = reader.readString(offsets[6]);
+  object.type = _UsertypeValueEnumMap[reader.readStringOrNull(offsets[7])] ??
       UserType.you;
   return object;
 }
@@ -170,6 +178,8 @@ P _userDeserializeProp<P>(
     case 5:
       return (reader.readStringOrNull(offset)) as P;
     case 6:
+      return (reader.readString(offset)) as P;
+    case 7:
       return (_UsertypeValueEnumMap[reader.readStringOrNull(offset)] ??
           UserType.you) as P;
     default:
@@ -1195,6 +1205,136 @@ extension UserQueryFilter on QueryBuilder<User, User, QFilterCondition> {
     });
   }
 
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineEqualTo(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'personalTagline',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'personalTagline',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'personalTagline',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'personalTagline',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<User, User, QAfterFilterCondition> personalTaglineIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'personalTagline',
+        value: '',
+      ));
+    });
+  }
+
   QueryBuilder<User, User, QAfterFilterCondition> typeEqualTo(
     UserType value, {
     bool caseSensitive = true,
@@ -1389,6 +1529,18 @@ extension UserQuerySortBy on QueryBuilder<User, User, QSortBy> {
     });
   }
 
+  QueryBuilder<User, User, QAfterSortBy> sortByPersonalTagline() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'personalTagline', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> sortByPersonalTaglineDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'personalTagline', Sort.desc);
+    });
+  }
+
   QueryBuilder<User, User, QAfterSortBy> sortByType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.asc);
@@ -1475,6 +1627,18 @@ extension UserQuerySortThenBy on QueryBuilder<User, User, QSortThenBy> {
     });
   }
 
+  QueryBuilder<User, User, QAfterSortBy> thenByPersonalTagline() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'personalTagline', Sort.asc);
+    });
+  }
+
+  QueryBuilder<User, User, QAfterSortBy> thenByPersonalTaglineDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'personalTagline', Sort.desc);
+    });
+  }
+
   QueryBuilder<User, User, QAfterSortBy> thenByType() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'type', Sort.asc);
@@ -1528,6 +1692,14 @@ extension UserQueryWhereDistinct on QueryBuilder<User, User, QDistinct> {
     });
   }
 
+  QueryBuilder<User, User, QDistinct> distinctByPersonalTagline(
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'personalTagline',
+          caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<User, User, QDistinct> distinctByType(
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
@@ -1576,6 +1748,12 @@ extension UserQueryProperty on QueryBuilder<User, User, QQueryProperty> {
   QueryBuilder<User, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<User, String, QQueryOperations> personalTaglineProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'personalTagline');
     });
   }
 

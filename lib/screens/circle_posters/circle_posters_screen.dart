@@ -2,9 +2,9 @@ import 'dart:isolate';
 import 'dart:ui';
 
 // ignore: unused_import
-import 'package:cyber_friend_circle/components/circle/circle_poster_detail_widget.dart';
-import 'package:cyber_friend_circle/components/circle/circle_poster_widget.dart';
-import 'package:cyber_friend_circle/components/circle/custom_scrollview.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/components/circle_poster_detail_widget.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/components/circle_poster_widget.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/components/custom_scrollview.dart';
 import 'package:cyber_friend_circle/global/ai_client.dart';
 import 'package:cyber_friend_circle/screens/circle_posters/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';

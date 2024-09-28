@@ -18,6 +18,34 @@ class FriendManagementNotifier
 
     return FriendManagementState(friends: users);
   }
+
+  refresh() {
+    final users = database.isar!.users
+        .filter()
+        .not()
+        .typeEqualTo(UserType.you)
+        .findAllSync();
+
+    state = state.copyWith(friends: users);
+  }
+
+  addCharacters(User u, String tag) async {
+    await database.isar!.writeTxn(() async {
+      u.characters = List.of(u.characters)..add(tag);
+      await database.isar!.users.put(u);
+    });
+
+    refresh();
+  }
+
+  removeCharacters(User u, String tag) async {
+    await database.isar!.writeTxn(() async {
+      u.characters = List.of(u.characters)..remove(tag);
+      await database.isar!.users.put(u);
+    });
+
+    refresh();
+  }
 }
 
 final friendManagementProvider = AutoDisposeNotifierProvider<
