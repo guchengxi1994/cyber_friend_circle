@@ -1,4 +1,3 @@
-import 'dart:isolate';
 import 'dart:ui';
 
 // ignore: unused_import
@@ -29,9 +28,6 @@ class _CirclePostersScreenState extends ConsumerState<CirclePostersScreen>
   late Animation<double> _animation;
 
   final AiClient aiClient = AiClient();
-
-  // ignore: unused_field
-  late SendPort _sendPort;
 
   @override
   initState() {

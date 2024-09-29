@@ -38,6 +38,7 @@ dependencies:
   riverpod: ^2.5.1
   toastification: ^2.3.0
   badges: ^3.1.2
+  meta: ^1.15.0
   
 
 dev_dependencies:

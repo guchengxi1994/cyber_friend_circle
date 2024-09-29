@@ -38,7 +38,8 @@ class CirclePosterReplyWidget extends StatelessWidget {
               const SizedBox(height: 5),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 150,
-                child: reply.replyType == ReplyType.text
+                child: reply.replyType == ReplyType.text ||
+                        reply.replyType == ReplyType.emoji
                     ? MarkdownBlock(data: reply.content ?? "")
                     : Align(
                         alignment: Alignment.centerLeft,

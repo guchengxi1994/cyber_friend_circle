@@ -58,6 +58,8 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
     receivePort.listen((message) {
       if (message is int) {
         ref.read(circlePostersProvider.notifier).refresh();
+      } else {
+        logger.info(message);
       }
     });
   }

@@ -98,10 +98,20 @@ void startIsolate(IsolateData data) async {
         continue;
       }
 
-      /// TODO;FIXME 限制一下用户回答次数或者回答的内容，让回答生成的更加多样化
-      final user = users[random.nextInt(users.length)];
+      final userReply = randomTopic.getAvailableUser(users);
 
-      // Step 2: 查询 targetId 之前的两条数据
+      if (userReply == null) {
+        data.sendPort
+            .send("no user available for topic ${randomTopic.content}");
+        continue;
+      }
+
+      final user = userReply.$1;
+      final replyType = userReply.$2;
+
+      data.sendPort.send("${user.name}  $replyType");
+
+      // 查询 topidId 之前的两条数据
       final itemsBefore = await isar.topics
           .filter()
           .idLessThan(randomTopic.id) // 查询小于 targetId 的记录
@@ -110,17 +120,15 @@ void startIsolate(IsolateData data) async {
           .findAll();
 
       await isar.writeTxn(() async {
-        double s = random.nextDouble();
         final String replyText;
         final replyTopic = TopicReply();
 
-        if (s < GlobalSettings.animatedEmojiProportion) {
-          replyTopic.replyType = ReplyType.emoji;
+        /// TODO 优化返回emoji的逻辑，最好是emoji能够和内容相关
+        if (replyType == ReplyType.animatedEmoji) {
+          replyTopic.replyType = ReplyType.animatedEmoji;
           replyText = animatedEmojis[random.nextInt(animatedEmojis.length)];
-        } else if (s >= GlobalSettings.animatedEmojiProportion &&
-            s <
-                GlobalSettings.emojiProportion +
-                    GlobalSettings.animatedEmojiProportion) {
+        } else if (replyType == ReplyType.emoji) {
+          replyTopic.replyType = ReplyType.emoji;
           replyText = emojis[random.nextInt(emojis.length)];
         } else {
           final reply = await client.chat([

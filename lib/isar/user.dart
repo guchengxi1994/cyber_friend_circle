@@ -42,4 +42,13 @@ class User {
 
     return "你的名字叫$name,你是用户的$t，$c。";
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is User && other.id == id;
+  }
+
+  @Ignore()
+  @override
+  int get hashCode => id.hashCode;
 }
