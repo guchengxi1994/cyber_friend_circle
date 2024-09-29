@@ -1,17 +1,21 @@
 import 'package:animated_emoji/animated_emoji.dart';
 import 'package:cyber_friend_circle/isar/image.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/replies_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
 import '../../../components/avatar.dart';
 
-class CirclePosterReplyWidget extends StatelessWidget {
-  const CirclePosterReplyWidget({super.key, required this.reply});
+class CirclePosterReplyWidget extends ConsumerWidget {
+  const CirclePosterReplyWidget(
+      {super.key, required this.reply, required this.topicId});
   final TopicReply reply;
+  final int topicId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       margin: const EdgeInsets.only(bottom: 1, left: 10, right: 10),
       padding: const EdgeInsets.all(10),
@@ -61,19 +65,34 @@ class CirclePosterReplyWidget extends StatelessWidget {
                     const Spacer(),
                     if (reply.reaction == Reaction.like)
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          reply.reaction = Reaction.none;
+                          ref
+                              .read(repliesProvider(topicId).notifier)
+                              .updateReply(reply);
+                        },
                         child: const Icon(Icons.thumb_up,
                             color: Colors.green, size: 15),
                       ),
                     if (reply.reaction == Reaction.dislike)
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          reply.reaction = Reaction.none;
+                          ref
+                              .read(repliesProvider(topicId).notifier)
+                              .updateReply(reply);
+                        },
                         child: const Icon(Icons.thumb_down,
                             color: Colors.red, size: 15),
                       ),
                     if (reply.reaction == Reaction.none)
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          reply.reaction = Reaction.like;
+                          ref
+                              .read(repliesProvider(topicId).notifier)
+                              .updateReply(reply);
+                        },
                         child: const Icon(Icons.thumb_up_alt_outlined,
                             color: Colors.grey, size: 15),
                       ),
@@ -81,7 +100,12 @@ class CirclePosterReplyWidget extends StatelessWidget {
                       const SizedBox(width: 20),
                     if (reply.reaction == Reaction.none)
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          reply.reaction = Reaction.dislike;
+                          ref
+                              .read(repliesProvider(topicId).notifier)
+                              .updateReply(reply);
+                        },
                         child: const Icon(Icons.thumb_down_alt_outlined,
                             color: Colors.grey, size: 15),
                       ),

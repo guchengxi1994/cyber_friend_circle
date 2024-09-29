@@ -4,6 +4,7 @@ import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../replies_notifier.dart';
 import 'circle_poster_reply_widget.dart';
 
 class CirclePosterDetailWidget extends ConsumerStatefulWidget {
@@ -42,7 +43,8 @@ class _CirclePosterDetailWidgetState
 
   @override
   Widget build(BuildContext context) {
-    List<TopicReply> replies = widget.topic.replies.toList();
+    // List<TopicReply> replies = widget.topic.replies.toList();
+    final state = ref.watch(repliesProvider(widget.topic.id));
 
     return Scaffold(
       body: Stack(
@@ -90,8 +92,25 @@ class _CirclePosterDetailWidgetState
                       },
                     ),
                     if (isAtTop)
-                      ...replies.map((e) {
-                        return CirclePosterReplyWidget(reply: e);
+                      Builder(builder: (c) {
+                        return state.when(data: (v) {
+                          return Column(
+                              children: v.map((e) {
+                            return CirclePosterReplyWidget(
+                              reply: e,
+                              topicId: widget.topic.id,
+                            );
+                          }).toList());
+                        }, error: (_, err) {
+                          return Container();
+                        }, loading: () {
+                          return const SizedBox(
+                            height: 50,
+                            child: Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          );
+                        });
                       }),
                   ],
                 ),
