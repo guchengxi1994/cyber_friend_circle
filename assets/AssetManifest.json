@@ -16,10 +16,13 @@
         },
         {
             "type": "animated-emoji",
-            "prefix": "assets/emojis/",
+            "prefix": "",
             "items": [
-                "joy.json",
-                "smile.json"
+                "rocket",
+                "victory",
+                "brokenHeart",
+                "smile",
+                "sunglassesFace"
             ]
         },
         {

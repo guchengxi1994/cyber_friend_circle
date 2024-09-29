@@ -74,7 +74,7 @@ class _RichTextInputFieldState extends ConsumerState<RichTextInputField> {
                 elevation: 4,
                 borderRadius: BorderRadius.circular(8),
                 child: AnimatedContainer(
-                  width: MediaQuery.of(context).size.width - /* padding */ 40,
+                  width: MediaQuery.of(context).size.width - /* padding */ 100,
                   height: state.expanded
                       ? MediaQuery.of(context).size.height - 70
                       : 75,

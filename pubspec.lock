@@ -363,14 +363,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.7.0"
-  flutter_keyboard_visibility:
-    dependency: transitive
-    description:
-      name: flutter_keyboard_visibility
-      sha256: "98664be7be0e3ffca00de50f7f6a287ab62c763fc8c762e0a21584584a3ff4f8"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "6.0.0"
   flutter_keyboard_visibility_linux:
     dependency: transitive
     description:
@@ -395,14 +387,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.0"
-  flutter_keyboard_visibility_web:
+  flutter_keyboard_visibility_temp_fork:
     dependency: transitive
     description:
-      name: flutter_keyboard_visibility_web
-      sha256: d3771a2e752880c79203f8d80658401d0c998e4183edca05a149f5098ce6e3d1
+      name: flutter_keyboard_visibility_temp_fork
+      sha256: e342172aaa6173a661e822c85a005f8c5d0a04a1d263e00cb9f9155adab9cb7c
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0"
+    version: "0.1.1"
   flutter_keyboard_visibility_windows:
     dependency: transitive
     description:
@@ -436,10 +428,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_quill
-      sha256: "90da4f3866ea4ca1b0d4055f0d3a514c7e45276b82b71a62d97389e742fe9b54"
+      sha256: "27afdee8ea3b7bf5cb3b36f4c195468b24bcaad80036d4daa423bf948e8b5a97"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "10.7.5"
+    version: "10.8.1"
   flutter_quill_delta_from_html:
     dependency: transitive
     description:
@@ -642,6 +634,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "6.8.0"
+  just_the_tooltip:
+    dependency: "direct main"
+    description:
+      name: just_the_tooltip
+      sha256: "7a081133d57285bfb41b331f411006d57b433d7b35772e6155745f6a7a09cb82"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.12"
   langchain:
     dependency: transitive
     description:
@@ -927,34 +927,10 @@ packages:
     dependency: transitive
     description:
       name: quill_native_bridge
-      sha256: ba19b639c0fa5d4cadb58465cfdba439d8bffb5b2ccbbc76ff15af8124dcdd7e
+      sha256: "7e2050567c5dae3516b6c399fdd2036971aa16114e19c51832523f2ec1b8faca"
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "10.7.6"
-  quill_native_bridge_platform_interface:
-    dependency: transitive
-    description:
-      name: quill_native_bridge_platform_interface
-      sha256: f2219420890d51a260f6e71ef098428a07b4edc50148f66a0b137767a5b6fb7d
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.0.1-dev.0"
-  quill_native_bridge_web:
-    dependency: transitive
-    description:
-      name: quill_native_bridge_web
-      sha256: "2524e9f74a6ebb386776aa55d4d49a917610f6883a487fb433583d899699dfd4"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.0.1-dev.1"
-  quill_native_bridge_windows:
-    dependency: transitive
-    description:
-      name: quill_native_bridge_windows
-      sha256: "997daa116473b0f153ebb4e64478658f5020b80c2a4860ddf11c0117712155cf"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.0.1-dev.0"
+    version: "10.6.2"
   quiver:
     dependency: transitive
     description:
@@ -1256,14 +1232,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.0.1"
-  win32:
-    dependency: transitive
-    description:
-      name: win32
-      sha256: "68d1e89a91ed61ad9c370f9f8b6effed9ae5e0ede22a270bdfa6daf79fc2290a"
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "5.5.4"
   xdg_directories:
     dependency: transitive
     description:

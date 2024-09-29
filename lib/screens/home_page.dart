@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:cyber_friend_circle/components/sidebar/sidebar.dart';
 import 'package:cyber_friend_circle/components/sidebar/sidebar_notifier.dart';
 import 'package:cyber_friend_circle/global/ai_client.dart';
+import 'package:cyber_friend_circle/global/global.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,8 +48,12 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   void start() async {
     final receivePort = ReceivePort();
     var rootToken = RootIsolateToken.instance!;
+    final animatedEmojis = AssetsLoader.getAssets("animated-emoji").items;
+    final emojis = AssetsLoader.getAssets("emoji").items;
     await Isolate.spawn<IsolateData>(
-        startIsolate, IsolateData(receivePort.sendPort, rootToken));
+        startIsolate,
+        IsolateData(receivePort.sendPort, rootToken,
+            animatedEmojis: animatedEmojis, emojis: emojis));
 
     receivePort.listen((message) {
       if (message is int) {

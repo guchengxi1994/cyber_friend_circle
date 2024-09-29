@@ -1,10 +1,12 @@
 import 'package:cyber_friend_circle/components/avatar.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
+import 'package:cyber_friend_circle/screens/circle_posters/circle_posters_notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:markdown_widget/markdown_widget.dart';
 
-class CirclePoster extends StatelessWidget {
+class CirclePoster extends ConsumerWidget {
   const CirclePoster(
       {super.key, required this.topic, required this.user, this.onTap});
   final Topic topic;
@@ -12,9 +14,13 @@ class CirclePoster extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return GestureDetector(
       onTap: () {
+        if (ref.read(circlePostersProvider).showBottom) {
+          ref.read(circlePostersProvider.notifier).toggleBottom();
+        }
+
         if (onTap != null) {
           onTap!();
         }

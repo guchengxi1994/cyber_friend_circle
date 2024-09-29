@@ -49,9 +49,12 @@ class EmojiSelectorWidget extends StatelessWidget {
                               onEmojiSelected(v);
                             },
                             child: SizedBox(
-                              width: 25,
-                              height: 25,
-                              child: Text(v),
+                              width: 40,
+                              height: 40,
+                              child: Text(
+                                v,
+                                style: TextStyle(fontSize: 25),
+                              ),
                             ),
                           ))
                       .toList()
@@ -60,11 +63,14 @@ class EmojiSelectorWidget extends StatelessWidget {
                         onEmojiSelected("\n");
                       },
                       child: SizedBox(
-                        width: 25,
-                        height: 25,
+                        width: 40,
+                        height: 40,
                         child: Transform.rotate(
                           angle: -3.14 / 4,
-                          child: const Icon(Icons.call_missed),
+                          child: const Icon(
+                            Icons.call_missed,
+                            size: 25,
+                          ),
                         ),
                       ),
                     )),

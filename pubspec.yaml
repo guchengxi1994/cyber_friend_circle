@@ -2,7 +2,7 @@ name: cyber_friend_circle
 description: "This app needs no description."
 publish_to: 'none' 
 
-version: 0.1.1
+version: 0.1.2
 
 environment:
   sdk: ^3.5.3
@@ -16,7 +16,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_quill: ^10.7.5
+  flutter_quill: ^10.8.1
   flutter_riverpod: ^2.5.1
   flutter_tags_x: ^1.1.0
   flutter_zoom_drawer: ^3.2.0
@@ -27,6 +27,7 @@ dependencies:
     version: 3.1.8
     hosted: https://pub.isar-community.dev/
   json_annotation: ^4.9.0
+  just_the_tooltip: ^0.0.12
   langchain_lib:
     git:
       url: https://github.com/guchengxi1994/langchain_lib
@@ -56,7 +57,12 @@ flutter:
   assets: 
     - assets/avatars/
     - assets/bgs/
-    - assets/emojis/
     - assets/AssetManifest.json
+    - packages/animated_emoji/lottie/rocket.json
+    - packages/animated_emoji/lottie/victory.json
+    - packages/animated_emoji/lottie/brokenHeart.json
+    - packages/animated_emoji/lottie/smile.json
+    - packages/animated_emoji/lottie/rocket.json
+    - packages/animated_emoji/lottie/sunglassesFace.json
 
 

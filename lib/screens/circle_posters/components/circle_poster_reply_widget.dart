@@ -1,3 +1,4 @@
+import 'package:animated_emoji/animated_emoji.dart';
 import 'package:cyber_friend_circle/isar/image.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +38,14 @@ class CirclePosterReplyWidget extends StatelessWidget {
               const SizedBox(height: 5),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 150,
-                child: MarkdownBlock(data: reply.content ?? ""),
+                child: reply.replyType == ReplyType.text
+                    ? MarkdownBlock(data: reply.content ?? "")
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: AnimatedEmoji(
+                            size: 100,
+                            AnimatedEmojis.fromName(reply.content ?? "")),
+                      ),
               ),
               const SizedBox(height: 5),
               SizedBox(

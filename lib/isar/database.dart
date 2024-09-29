@@ -1,5 +1,6 @@
 import 'package:cyber_friend_circle/global/global.dart' show logger;
 import 'package:cyber_friend_circle/isar/board.dart';
+import 'package:cyber_friend_circle/isar/qa.dart';
 import 'package:cyber_friend_circle/isar/topic.dart';
 import 'package:cyber_friend_circle/isar/user.dart';
 import 'package:isar/isar.dart';
@@ -33,6 +34,7 @@ class IsarDatabase {
     UserSchema,
     TopicReplySchema,
     TopicSchema,
-    BoardSchema
+    BoardSchema,
+    QaSchema
   ];
 }

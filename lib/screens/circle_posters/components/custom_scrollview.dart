@@ -59,6 +59,9 @@ class _CustomScrollviewState extends ConsumerState<CustomScrollview> {
         children: [
           GestureDetector(
             onTap: () {
+              if (ref.read(circlePostersProvider).showBottom) {
+                ref.read(circlePostersProvider.notifier).toggleBottom();
+              }
               ref.read(circlePostersProvider.notifier).changeBgExpand();
             },
             child: AnimatedContainer(
