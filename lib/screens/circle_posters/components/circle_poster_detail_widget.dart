@@ -117,20 +117,6 @@ class _CirclePosterDetailWidgetState
               ),
             ),
           ),
-          // if (isAtTop)
-          //   Positioned(
-          //     top: 30,
-          //     right: 10,
-          //     child: InkWell(
-          //       onTap: () {
-          //         Navigator.of(context).pop();
-          //       },
-          //       child: const Icon(
-          //         Icons.close,
-          //         color: Colors.black,
-          //       ),
-          //     ),
-          //   )
         ],
       ),
     );
